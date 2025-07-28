@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Генератор кодов</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            padding: 40px;
+            text-align: center;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 24px;
+            color: #333;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Генератор клиентского кода</h1>
+
+    <input type="date" id="dateInput">
+    <br>
+    <input type="number" id="orderInput" placeholder="Номер заказа">
+    <br>
+    <input type="text" id="nameInput" placeholder="Имя клиента">
+    <br>
+    <button onclick="generateCode()">Сгенерировать код</button>
+
+    <div id="result"></div>
+
+    <script>
+        const translit = {
+            'А': 'A', 'Б': 'B', 'В': 'V', 'Г': 'G', 'Д': 'D',
+            'Е': 'E', 'Ё': 'E', 'Ж': 'Z', 'З': 'Z', 'И': 'I',
+            'Й': 'I', 'К': 'K', 'Л': 'L', 'М': 'M', 'Н': 'N',
+            'О': 'O', 'П': 'P', 'Р': 'R', 'С': 'S', 'Т': 'T',
+            'У': 'U', 'Ф': 'F', 'Х': 'H', 'Ц': 'C', 'Ч': 'C',
+            'Ш': 'S', 'Щ': 'S', 'Ы': 'Y', 'Э': 'E', 'Ю': 'U',
+            'Я': 'Y'
+        };
+
+        function generateCode() {
+            const dateStr = document.getElementById("dateInput").value;
+            const orderNumber = document.getElementById("orderInput").value;
+            const name = document.getElementById("nameInput").value;
+
+            if (!dateStr || !orderNumber || !name) {
+                alert("Пожалуйста, заполните все поля.");
+                return;
+            }
+
+            const date = new Date(dateStr);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = String(date.getFullYear()).slice(-2);
+            const nn = String(orderNumber).slice(-2).padStart(2, '0');
+
+            const firstLetter = name.trim()[0].toUpperCase();
+            const latinLetter = translit[firstLetter] || 'X';
+
+            const code = `${day}${month}${year}${nn}${latinLetter}`;
+
+            document.getElementById("result").innerText = `Код: ${code}`;
+        }
+    </script>
+
+</body>
+</html>
